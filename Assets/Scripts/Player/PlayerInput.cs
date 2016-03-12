@@ -11,6 +11,8 @@ public class PlayerInput : MonoBehaviour {
     public Weapon weapon;
     public float fireDelay = 0f;
 
+    public PlayerInteraction interaction;
+
 	void Start () {
         mouseLook = GetComponent<MouseLook>();
         playerCamera = GetComponentInChildren<Camera>();
@@ -79,7 +81,8 @@ public class PlayerInput : MonoBehaviour {
         // Use/Talk Action
         if (Input.GetKeyDown(KeyCode.E)) {
             // Use
-            Debug.Log("Using/Talking");
+            Debug.Log("Using/Talking/Interacting");
+            interaction.Interact();
         }
 
         // Debug break of the scene

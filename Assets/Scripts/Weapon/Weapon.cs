@@ -249,10 +249,12 @@ public class Weapon : MonoBehaviour {
         RaycastHit hit;
         Debug.DrawRay(shootFromObject.position, dir * range, Color.red, 25f);
         if (Physics.Raycast(shootFromObject.position, dir, out hit, range)) {
-            hit.collider.gameObject.SendMessageUpwards("OnHit", new HitDetails(damage, hit.point), SendMessageOptions.DontRequireReceiver);
+            hit.collider.gameObject.SendMessageUpwards("OnHit", new HitDetails(damage, hit.point, transform.root.gameObject), SendMessageOptions.DontRequireReceiver);
         }
         CancelInvoke("disableFlash");
         Invoke("disableFlash", 0.03f); // TODO Fix the issue with the timing of the disable
+
+        // Could do a notice on shot to enemys in range to set an active target if they do not have one
     }
 
     void disableFlash() {

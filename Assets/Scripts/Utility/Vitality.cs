@@ -26,6 +26,7 @@ public class Vitality : MonoBehaviour {
         if (DeathObject) {
             Instantiate(DeathObject, transform.position, transform.rotation);
         }
+
         Destroy(gameObject);
     }
 }

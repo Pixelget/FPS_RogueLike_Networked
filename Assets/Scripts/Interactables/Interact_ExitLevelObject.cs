@@ -1,0 +1,23 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class Interact_ExitLevelObject : Interactable {
+    public string nextLevel = ""; // TODO change this dynamically on generation
+    float timer = 0f;
+    public float TimeToAdvance = 5f;
+
+    void Awake() {
+        enabled = false;
+    }
+
+    void OnEnable() {
+        Debug.Log(Sender.name + " interacted with " + this.name);
+    }
+
+    void Update() {
+        timer += Time.deltaTime;
+        if (timer > TimeToAdvance) {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(nextLevel);
+        }
+    }
+}

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -14,6 +15,10 @@ public class MapGenerator : MonoBehaviour {
     public List<GameObject> wallPrefabs;
     public GameObject player;
     public List<GameObject> Enemies;
+    public Text RemainingEnemiesText;
+    public GameObject exitLevelObject;
+
+    bool spawnedExit = false;
 
     List<FloorWalker> walkers = new List<FloorWalker>();
     public List<GameObject> placedFloors = new List<GameObject>();
@@ -21,6 +26,7 @@ public class MapGenerator : MonoBehaviour {
     List<Vector2> spawnLocations = new List<Vector2>();
     float movesSinceLastWalkerSpawn = 0;
     float rotationdegrees = 0;
+    public Vector3 spawnLocation;
 
     int floorCount = 0;
 
@@ -30,10 +36,26 @@ public class MapGenerator : MonoBehaviour {
         WalkerStart();
 	}
 	
-	void Update () {
+	void LateUpdate () {
         //if (!GenerationComplete)
-            //WalkerUpdate();
-	}
+        //WalkerUpdate();
+        int remainingEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        RemainingEnemiesText.text = remainingEnemies + " Remaining";
+
+        if (remainingEnemies == 0) {
+            if (!spawnedExit) {
+                // Goto next level
+                // TODO change this to a point on the map to extract too, add the point to the minimap
+                // Spawn the next level object at the position of a random floor tile
+                Instantiate(exitLevelObject, placedFloors[Random.Range(0, placedFloors.Count)].transform.position, Quaternion.identity);
+                // show a notification to the player that the extraction point has apeared
+                // only do this once per level (bool wasCompletedAlready check)
+                // On interaction with the object, move all other players to the next level after 5 seconds
+                //UnityEngine.SceneManagement.SceneManager.LoadScene("");
+                spawnedExit = true;
+            }
+        }
+    }
 
     void WalkerStart() {
         // Spawn the floorwalker and place the first floor
@@ -92,41 +114,40 @@ public class MapGenerator : MonoBehaviour {
 
     void SpawnFloor(Vector2 position, bool spawnedFromWalker = true) {
         // check that there is not a floor already here
-        if (FloorAtPosition(position))
-            return;
-        
-        //there is a chance the floor that is place will place a [50%] 2x2
-        if (Random.Range(0f, 1f) < 0.3f && spawnedFromWalker) {
-            // 2x2
-            SpawnFloor(new Vector2(position.x + unitScale, position.y), false);
-            SpawnFloor(new Vector2(position.x, position.y + unitScale), false);
-            SpawnFloor(new Vector2(position.x + unitScale, position.y + unitScale), false);
+        if (!FloorAtPosition(position)) {
+            //there is a chance the floor that is place will place a [50%] 2x2
+            if (Random.Range(0f, 1f) < 0.3f && spawnedFromWalker) {
+                // 2x2
+                SpawnFloor(new Vector2(position.x + unitScale, position.y), false);
+                SpawnFloor(new Vector2(position.x, position.y + unitScale), false);
+                SpawnFloor(new Vector2(position.x + unitScale, position.y + unitScale), false);
+            }
+
+            int index = Random.Range(0, floorPrefabs.Count - 3);
+            float chance = Random.Range(0f, 1f);
+            if (chance < 0.15) {
+                if (Random.Range(0f, 1f) < 0.5f)
+                    index = floorPrefabs.Count - 3;
+                else
+                    index = floorPrefabs.Count - 2;
+            } else if (chance < 0.01) {
+                index = floorPrefabs.Count - 1;
+            }
+
+
+            GameObject temp = (GameObject) Instantiate(floorPrefabs[index], position, Quaternion.identity);
+            temp.transform.parent = this.transform;
+            temp.name = "Floor_" + position.x + "_" + position.y;
+            temp.transform.position = new Vector3(position.x, 0f, position.y);
+
+            temp.transform.Rotate(new Vector3(1f, 0f, 0f), 90f);
+            //SpriteRenderer tempSR = temp.AddComponent<SpriteRenderer>();
+            //tempSR.sprite = floorSprites[index];
+            //temp.transform.parent = this.transform;
+            //temp.name = "Floor_" + floorCount;
+            placedFloors.Add(temp);
+            floorCount++;
         }
-
-        int index = Random.Range(0, floorPrefabs.Count-3);
-        float chance = Random.Range(0f, 1f);
-        if (chance < 0.15) {
-            if (Random.Range(0f, 1f) < 0.5f)
-                index = floorPrefabs.Count - 3;
-            else
-                index = floorPrefabs.Count - 2;
-        } else if (chance < 0.01) {
-            index = floorPrefabs.Count - 1;
-        }
-
-
-        GameObject temp = (GameObject) Instantiate(floorPrefabs[index], position, Quaternion.identity);
-        temp.transform.parent = this.transform;
-        temp.name = "Floor_" + position.x + "_" + position.y;
-        temp.transform.position = new Vector3(position.x, 0f, position.y);
-        
-        temp.transform.Rotate(new Vector3(1f, 0f, 0f), 90f);
-        //SpriteRenderer tempSR = temp.AddComponent<SpriteRenderer>();
-        //tempSR.sprite = floorSprites[index];
-        //temp.transform.parent = this.transform;
-        //temp.name = "Floor_" + floorCount;
-        placedFloors.Add(temp);
-        floorCount++;
     }
 
     void SpawnPlayer() {
@@ -151,6 +172,7 @@ public class MapGenerator : MonoBehaviour {
             }
 
             if (count > 2) {
+                spawnLocation = placedFloors[i].transform.position;
                 player.transform.position = placedFloors[i].transform.position;
                 return;
             }
@@ -163,7 +185,7 @@ public class MapGenerator : MonoBehaviour {
         int enemyCount = 0;
         for (int i = 0; i < placedFloors.Count; i++) {
             if (Random.Range(0f, 1f) < 0.05f) {
-                if (Vector3.Distance(placedFloors[i].transform.position, player.transform.position) > 5f) {
+                if (Vector3.Distance(placedFloors[i].transform.position, player.transform.position) > 7f) {
                     SpawnEnemy(placedFloors[i].transform.position);
                     enemyCount++;
                 }
@@ -205,9 +227,9 @@ public class MapGenerator : MonoBehaviour {
     }
 
     void SpawnEnemy(Vector3 position) {
-        GameObject temp = (GameObject) Instantiate(Enemies[Random.Range(0, Enemies.Count)], position, Quaternion.identity);
+        //GameObject temp = (GameObject) Instantiate(Enemies[Random.Range(0, Enemies.Count)], position, Quaternion.identity);
         
-        temp.name = "Enemy";
+        //temp.name = "Enemy";
     }
 
     public bool FloorAtPosition(Vector3 position) {
