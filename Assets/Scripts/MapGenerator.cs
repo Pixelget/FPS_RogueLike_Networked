@@ -34,6 +34,7 @@ public class MapGenerator : MonoBehaviour {
 
 	void Start () {
         WalkerStart();
+        DebugText.init();
 	}
 	
 	void LateUpdate () {
@@ -227,9 +228,9 @@ public class MapGenerator : MonoBehaviour {
     }
 
     void SpawnEnemy(Vector3 position) {
-        //GameObject temp = (GameObject) Instantiate(Enemies[Random.Range(0, Enemies.Count)], position, Quaternion.identity);
+        GameObject temp = (GameObject) Instantiate(Enemies[Random.Range(0, Enemies.Count)], position, Quaternion.identity);
         
-        //temp.name = "Enemy";
+        temp.name = "Enemy";
     }
 
     public bool FloorAtPosition(Vector3 position) {

@@ -27,6 +27,8 @@ public class Vitality : MonoBehaviour {
             Instantiate(DeathObject, transform.position, transform.rotation);
         }
 
+        GetComponent<DebugState>().Dieing();
+
         Destroy(gameObject);
     }
 }

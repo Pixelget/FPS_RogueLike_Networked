@@ -59,43 +59,45 @@ public class EnemyAIManager : MonoBehaviour {
 
     IEnumerator Evaluate() {
         while (true) {
-            ResetEvaluateVars();
+            if (AIState != EnemyAIState.Flee) {
+                ResetEvaluateVars();
 
-            // Check health for danger levels
-            if ((canFlee) && (vitality.CurrentHP / vitality.TotalHP < fleeUnderHPPercent)) {
-                // Less than required % hp and can flee
-                AIState = EnemyAIState.Flee;
-            } else {
-                // Check if player in range
-                GetActionablePlayers();
-
-                if (playersInRange.Count > 0) {
-                    // There are targets, find the closest and chase/attack them
-                    // Determine the Active Target
-                    
-                    if (ActiveTarget) {
-                        // There is currently an active target
-                        if (!playersInRange.Contains(ActiveTarget)) {
-                            // switch active target
-                            ActiveTarget = playersInRange[0]; // TODO Fix this
-                        }
-                        // else use the current one
-                    } else {
-                        // Set active target
-                        ActiveTarget = playersInRange[0];// TODO Fix this
-                    }
-
-                    // is in range to attack and can attack then attack
-                    // else chase
-                    AIState = EnemyAIState.Chase;
+                // Check health for danger levels
+                if ((canFlee) && (vitality.CurrentHP / vitality.TotalHP < fleeUnderHPPercent)) {
+                    // Less than required % hp and can flee
+                    AIState = EnemyAIState.Flee;
                 } else {
-                    // Wander
-                    AIState = EnemyAIState.Wander;
-                    ActiveTarget = null;
-                }
-            }
+                    // Check if player in range
+                    GetActionablePlayers();
 
-            ExecuteDecision();
+                    if (playersInRange.Count > 0) {
+                        // There are targets, find the closest and chase/attack them
+                        // Determine the Active Target
+
+                        if (ActiveTarget) {
+                            // There is currently an active target
+                            if (!playersInRange.Contains(ActiveTarget)) {
+                                // switch active target
+                                ActiveTarget = playersInRange[0]; // TODO Fix this
+                            }
+                            // else use the current one
+                        } else {
+                            // Set active target
+                            ActiveTarget = playersInRange[0];// TODO Fix this
+                        }
+
+                        // is in range to attack and can attack then attack
+                        // else chase
+                        AIState = EnemyAIState.Chase;
+                    } else {
+                        // Wander
+                        AIState = EnemyAIState.Wander;
+                        ActiveTarget = null;
+                    }
+                }
+
+                ExecuteDecision();
+            }
 
             yield return new WaitForSeconds(TimeBetweenChoices);
         }
@@ -136,6 +138,8 @@ public class EnemyAIManager : MonoBehaviour {
             if (AIState == EnemyAIState.Wander) {
                 AIState = EnemyAIState.Chase;
             }
+
+            ExecuteDecision();
         }
     }
 
@@ -147,6 +151,10 @@ public class EnemyAIManager : MonoBehaviour {
                 playersInRange.Add(hitColliders[i].transform.root.gameObject);
             }
         }
+
+        if (ActiveTarget) {
+            playersInRange.Add(ActiveTarget);
+        }
     }
 
     public GameObject GetActiveTarget() {
@@ -155,5 +163,9 @@ public class EnemyAIManager : MonoBehaviour {
 
     void ResetEvaluateVars() {
         playersInRange.Clear();
+    }
+
+    public string GetState() {
+        return AIState.ToString();
     }
 }
