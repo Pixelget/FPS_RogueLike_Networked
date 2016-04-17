@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Interactable : MonoBehaviour {
+public abstract class Interactable : MonoBehaviour {
     public GameObject Sender = null;
+
+    public abstract void Interact();
 }

@@ -1,8 +1,12 @@
 ﻿public static class GameWeaponData {
     #region BaseData
-    public static float SpreadLevel = 12f;
+    public static float SpreadLevel = 16f;
     public static float WeaponAccuracyResetDelay = 0.75f;
-    public static int StartingAmmo = 30;
+    
+    public static int MaxSMGPistolAmmo = 120;
+    public static int MaxRifleAmmo = 90;
+    public static int MaxHeavyAmmo = 250;
+    public static int MaxShellAmmo = 48;
     #endregion
 
     #region DamageData
@@ -11,17 +15,17 @@
             case WeaponBase.Pistol:
                 return 10f;
             case WeaponBase.Revolver:
-                return 35f;
+                return 55f;
             case WeaponBase.SMG:
-                return 10f;
+                return 12f;
             case WeaponBase.PumpShotgun:
-                return 5.5f;
+                return 15f;
             case WeaponBase.CombatShotgun:
-                return 7f;
+                return 12f;
             case WeaponBase.MachineGun:
                 return 15f;
             case WeaponBase.BoltActionRifle:
-                return 30f;
+                return 35f;
             case WeaponBase.CombatRifle:
                 return 15f;
             case WeaponBase.Melee:
@@ -142,11 +146,11 @@
             case WeaponBase.SMG:
                 return 1.45f;
             case WeaponBase.PumpShotgun:
-                return 1.7f;
-            case WeaponBase.CombatShotgun:
                 return 2.0f;
+            case WeaponBase.CombatShotgun:
+                return 1.7f;
             case WeaponBase.MachineGun:
-                return 4f;
+                return 2.5f;
             case WeaponBase.BoltActionRifle:
                 return 1.3f;
             case WeaponBase.CombatRifle:
@@ -240,21 +244,21 @@
     public static float GetBaseFireRate(WeaponBase _base) {
         switch (_base) { // 1 Second / Number of rounds per second
             case WeaponBase.Pistol:
-                return 1f / 3f;
+                return 1.0f / 12f;
             case WeaponBase.Revolver:
-                return 1f / 0.8f;
+                return 1.0f / 2f;
             case WeaponBase.SMG:
-                return 1f / 6f;
+                return 1.0f / 8f;
             case WeaponBase.MachineGun:
-                return 1f / 4f;
+                return 1.0f / 8f;
             case WeaponBase.PumpShotgun:
-                return 1f / 0.75f;
+                return 1.0f / 8f;
             case WeaponBase.CombatShotgun:
-                return 1.0f;
+                return 1.0f / 8f;
             case WeaponBase.BoltActionRifle:
-                return 1.0f;
+                return 1.0f/ 3f;
             case WeaponBase.CombatRifle:
-                return 1f / 5f;
+                return 1f / 8f;
             case WeaponBase.Melee:
                 return 1.0f;
             default:
@@ -306,17 +310,17 @@
             case WeaponBase.Revolver:
                 return 0.9f;
             case WeaponBase.SMG:
-                return 0.8f;
+                return 0.5f;
             case WeaponBase.MachineGun:
-                return 0.65f;
+                return 0.4f;
             case WeaponBase.PumpShotgun:
-                return 0.45f;
+                return 0.3f;
             case WeaponBase.CombatShotgun:
-                return 0.45f;
+                return 0.35f;
             case WeaponBase.BoltActionRifle:
-                return 0.95f;
-            case WeaponBase.CombatRifle:
                 return 0.9f;
+            case WeaponBase.CombatRifle:
+                return 0.85f;
             case WeaponBase.Melee:
                 return 1.0f;
             default:

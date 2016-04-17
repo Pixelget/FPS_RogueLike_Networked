@@ -6,7 +6,7 @@ public enum WeaponBase { Pistol, Revolver, SMG, PumpShotgun, CombatShotgun, Mach
 public enum WeaponManufacturers { Marauder, Modular, TypeZero, Variance, Fragcaster, Baseline, Legendary }
 public enum WeaponQuality { Damaged, Worn, Normal, Modified, Heavy, Upgraded, Advanced, Legendary }
 
-public enum FireType { Single, Burst, Auto }
+public enum FireType { Single, Auto, Burst, Spray }
 public enum AmmoType { PistolSMG, Rifle, Shells, Heavy }
 
 [System.Serializable]
@@ -19,7 +19,7 @@ public class WeaponData {
 
     public AmmoType AmmoType;
     public bool LaserBased = false; // changes shot visuals, increased damage and reduce accuracy?
-    public FireType FireMode = FireType.Single;
+    public FireType FireMode;
 
     // Mod Slots - one for each mod type? Random chance to come with mods?
     //List<WeaponAttachment> WeaponAttachments = new List<WeaponAttachment>();
@@ -33,6 +33,8 @@ public class WeaponData {
 
     public RuntimeAnimatorController AnimatorController;
 
+    public int Ammo = 0;
+
     // Weapon Settings
     private float _reloadTime;
     public float ReloadTime
@@ -43,6 +45,10 @@ public class WeaponData {
     public int MagazineSize
     {
         get { return _magazineSize; }
+    }
+    private float _range;
+    public float Range {
+        get { return _range; }
     }
 
     //[Header ("Damage Settings")]
@@ -96,20 +102,20 @@ public class WeaponData {
         get { return _accuracyResetRate; }
     }
 
-    // Visual and Sound FX
-    public GameObject GunObject;
-    public AudioClip ShotSound;
-
     #region ComputeVariables
     // Need to include the mods in these calculations as well
 
     public void ComputeWeapon(float damageVariance, float magazineVariance, float reloadVariance, float fireRateVariance, float accuracyVariance, float recoilVariance) {
         ComputeDamage(damageVariance);
         ComputeMagazineSize(magazineVariance);
+        ComputeRange();
         ComputeReloadTime(reloadVariance);
         ComputeBulletsPerShot();
         ComputeBurstDelay();
         ComputeFireRate(fireRateVariance);
+        ComputeAccuracyResetRate();
+        ComputeAccuracyReductionTime();
+        ComputeAccuracyReductionAmount();
         ComputeAccuracy(accuracyVariance);
         ComputeRecoil(recoilVariance);
     }
@@ -130,6 +136,11 @@ public class WeaponData {
             modifiedMagazine *= 0.9f;
 
         _magazineSize = Mathf.RoundToInt(modifiedMagazine);
+        Ammo = _magazineSize;
+    }
+
+    protected void ComputeRange() {
+        _range = 500f; // hardcode range for now
     }
 
     protected void ComputeReloadTime(float variance) {
@@ -159,7 +170,7 @@ public class WeaponData {
         float modifiedAccuracy = GameWeaponData.GetBaseAccuracy(Base) * GameWeaponData.GetManufacturerAccuracyModifier(Manufacturer) * GameWeaponData.GetQualityAccuracyModifier(Quality) * variance;
 
         _accuracy = Mathf.Clamp(modifiedAccuracy, 0f, 1f);
-        _spread = GameWeaponData.SpreadLevel * (1f - _accuracy);
+        _spread = GameWeaponData.SpreadLevel * (1f - (_accuracy - _accuracyReductionAmount));
     }
 
     protected void ComputeRecoil(float variance) {

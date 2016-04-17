@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum ItemType { Usable, Weapon, WeaponMod, Currency }
+public enum ItemType { AmmoPickup, HealthPickup, Weapon, WeaponMod, Currency }
+[System.Serializable]
 public class Item {
-    public bool Equiped = false;
     public string Name = "Not Defined";
-    public ItemType Type = ItemType.Usable;
+    public Sprite ItemArt;
+    public ItemType Type = ItemType.AmmoPickup;
+    public bool Equiped = false;
+    public bool AutoPickup = false;
 
     public WeaponData Weapon;
-    public int Currency = 0;
-    public int RecoverAmount = 0;
-    public bool IsAmmo = false;
+    //public WeaponMod WeaponMod;
+    public int Amount = 0; // used for hp, ammo, and currency
+    public AmmoType ammoType = AmmoType.PistolSMG;
 }

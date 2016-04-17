@@ -102,7 +102,7 @@ public class Weapon : MonoBehaviour {
 		fireRate = fireRateTotal;
 		burstShots = shotsPerBurst;
 		ammo = totalAmmo;
-		EndFire();
+        isFiring = false;
 	}
 
 	void GetBulletSpawnLocations() {
@@ -261,13 +261,9 @@ public class Weapon : MonoBehaviour {
         MuzzleFlash.SetActive(false);
     }
 	
-	public void StartFire() {
-		isFiring = true;
-	}
-	
-	public void EndFire() {
-		isFiring = false;
-	}
+    public void Firing(bool f) {
+        isFiring = f;
+    }
 	
 	void AimDirectionUpdate(Vector3 dir) {
 		AimDirection = dir;

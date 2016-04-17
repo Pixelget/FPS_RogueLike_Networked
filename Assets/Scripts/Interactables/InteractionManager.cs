@@ -7,6 +7,6 @@ public class InteractionManager : MonoBehaviour {
 
     void OnInteract(GameObject sender) {
         interactableObject.Sender = sender;
-        interactableObject.enabled = true;
+        interactableObject.Interact();
     }
 }

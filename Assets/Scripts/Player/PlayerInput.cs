@@ -2,14 +2,14 @@
 using System.Collections;
 
 public class PlayerInput : MonoBehaviour {
-
+    public PlayerManager player;
     public PlayerMovement movement;
     public GameObject CameraMount;
     MouseLook mouseLook;
     Camera playerCamera;
 
-    public Weapon weapon;
-    public float fireDelay = 0f;
+    public WeaponManager weapon;
+    public float fireSprintDelay = 0f;
 
     public PlayerInteraction interaction;
 
@@ -20,8 +20,8 @@ public class PlayerInput : MonoBehaviour {
 	}
 	
 	void Update () {
-        if (fireDelay > 0f) {
-            fireDelay -= Time.deltaTime;
+        if (fireSprintDelay > 0f) {
+            fireSprintDelay -= Time.deltaTime;
         }
 
         // Movement
@@ -42,7 +42,7 @@ public class PlayerInput : MonoBehaviour {
 
         movement.Move(MovementDirection.normalized, CameraMount.transform.localRotation);
         mouseLook.LookRotation();
-
+        
         // Jump Action
         if (Input.GetKeyDown(KeyCode.Space)) {
             // Jump if on the ground
@@ -51,10 +51,10 @@ public class PlayerInput : MonoBehaviour {
 
         // Fire Action
         if (Input.GetMouseButtonDown(0) && CanFire()) {
-            weapon.StartFire();
+            weapon.IsFiring(true);
         }
         if (Input.GetMouseButtonUp(0)) {
-            weapon.EndFire();
+            weapon.IsFiring(false);
         }
 
         // Reload Action
@@ -75,14 +75,19 @@ public class PlayerInput : MonoBehaviour {
             movement.Sprint(false);
 
             // Delay on fire from coming out of sprint
-            fireDelay = 0.5f;
+            fireSprintDelay = 0.5f;
         }
 
         // Use/Talk Action
         if (Input.GetKeyDown(KeyCode.E)) {
             // Use
-            Debug.Log("Using/Talking/Interacting");
+            //Debug.Log("Using/Talking/Interacting");
             interaction.Interact();
+        }
+
+        // Switch Weapons
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            player.Inventory.SwapWeapon();
         }
 
         // Debug break of the scene
@@ -92,7 +97,7 @@ public class PlayerInput : MonoBehaviour {
     }
 
     bool CanFire() {
-        if (fireDelay > 0f) {
+        if (fireSprintDelay > 0f) {
             return false;
         }
         if (movement.Sprinting) {

@@ -6,8 +6,9 @@ public class PlayerGUI : MonoBehaviour {
 
     public Text AmmoTrackerText;
     public Text HealthTrackerText;
-    public Weapon WeaponTracker;
+    public WeaponManager WeaponTracker;
     public PlayerVitality HealthTracker;
+    public PlayerManager player;
 
 	void Start () {
         AmmoTrackerText = GameObject.FindGameObjectWithTag("UI_AmmoTracker").GetComponent<Text>();
@@ -16,7 +17,7 @@ public class PlayerGUI : MonoBehaviour {
 	
 	void Update () {
         if (AmmoTrackerText) {
-            AmmoTrackerText.text = WeaponTracker.ammo.ToString();
+            AmmoTrackerText.text = WeaponTracker.GetAmmo().ToString() + " / " + player.Inventory.Ammo[(int) WeaponTracker.Weapon.AmmoType];
         }
         if (HealthTrackerText) {
             HealthTrackerText.text = "+" + HealthTracker.CurrentHP.ToString();
