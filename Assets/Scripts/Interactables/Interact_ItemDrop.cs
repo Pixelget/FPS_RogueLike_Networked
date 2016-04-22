@@ -9,6 +9,7 @@ public class Interact_ItemDrop : Interactable {
     void Start() {
         GetComponentInChildren<SpriteRenderer>().sprite = item.ItemArt;
         player = GameObject.FindGameObjectWithTag("Player");
+        InteractText = item.PickupText;
     }
     
     public override void Interact() {

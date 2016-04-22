@@ -9,6 +9,7 @@ public class Item {
     public ItemType Type = ItemType.AmmoPickup;
     public bool Equiped = false;
     public bool AutoPickup = false;
+    public string PickupText = "";
 
     public WeaponData Weapon;
     //public WeaponMod WeaponMod;

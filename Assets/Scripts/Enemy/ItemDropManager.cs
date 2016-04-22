@@ -17,7 +17,7 @@ public class ItemDropManager : MonoBehaviour {
                 offset = new Vector3(Random.Range(-0.5f, 0.5f), 0f, Random.Range(-0.5f, 0.5f));
 
                 GameObject temp = (GameObject) Instantiate(ItemDropPrefab, transform.position + offset, Quaternion.identity);
-                temp.GetComponent<Interact_ItemDrop>().item = LootTable[Random.Range(0, LootTable.Count - 1)];
+                temp.GetComponent<Interact_ItemDrop>().item = LootTable[Random.Range(0, LootTable.Count)];
             }
         }
     }

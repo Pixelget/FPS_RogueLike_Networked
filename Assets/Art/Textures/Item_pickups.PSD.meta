@@ -1,0 +1,129 @@
+fileFormatVersion: 2
+guid: 841280502f6611140a204aa7b8985e4e
+timeCreated: 1461069914
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Item_pickups_0
+    21300002: Item_pickups_1
+    21300004: Item_pickups_2
+    21300006: Item_pickups_3
+    21300008: Item_pickups_4
+    21300010: Item_pickups_5
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: Item_pickups_0
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 50
+        width: 27
+        height: 25
+      alignment: 9
+      pivot: {x: 0.5, y: -0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Item_pickups_1
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 49
+        width: 27
+        height: 19
+      alignment: 9
+      pivot: {x: 0.5, y: -0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Item_pickups_2
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 43
+        width: 45
+        height: 29
+      alignment: 9
+      pivot: {x: 0.5, y: -0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Item_pickups_3
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 24
+        width: 26
+        height: 19
+      alignment: 9
+      pivot: {x: 0.5, y: -0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Item_pickups_4
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 23
+        width: 20
+        height: 21
+      alignment: 9
+      pivot: {x: 0.5, y: -0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    - name: Item_pickups_5
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 7
+        width: 21
+        height: 32
+      alignment: 9
+      pivot: {x: 0.5, y: -0.1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

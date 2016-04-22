@@ -5,11 +5,10 @@ using System.Collections;
 public class PlayerInteraction : MonoBehaviour {
 
     public float InteractionRange = 2f;
-    GameObject textObj;
+    public GameObject textObj;
     Text text;
 
     void Start() {
-        textObj = DebugText.GetNextObj();
         if (textObj) {
             textObj.SetActive(true);
             text = textObj.GetComponent<Text>();
@@ -17,20 +16,13 @@ public class PlayerInteraction : MonoBehaviour {
     }
 
     void Update () {
-        if (textObj == null) {
-            textObj = DebugText.GetNextObj();
-            textObj.SetActive(true);
-            text = textObj.GetComponent<Text>();
-        }
-        
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, InteractionRange)) {
             if (hit.collider.tag == "Interactable") {
                 textObj.SetActive(true);
-                text.text = "USE";
-                textObj.transform.position = hit.point + ((hit.point - Camera.main.transform.position).normalized * -0.5f);
+                text.text = hit.collider.gameObject.GetComponent<Interactable>().InteractText;
             } else {
                 textObj.SetActive(false);
             }

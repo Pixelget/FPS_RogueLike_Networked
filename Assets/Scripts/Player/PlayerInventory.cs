@@ -93,7 +93,7 @@ public class PlayerInventory : MonoBehaviour {
                 return false;
             case ItemType.Currency:
                 Currency += item.Amount;
-                break;
+                return true;
             case ItemType.Weapon:
             case ItemType.WeaponMod:
                 if (Backpack.Count < PackLimit) {
